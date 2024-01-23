@@ -5,15 +5,20 @@ using System;
 
 public class PathfindingManager : MonoBehaviour {
 
-	Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
-	PathRequest currentPathRequest;
+	public Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>(); 
+
+	public PathRequest currentPathRequest;
 
 	static PathfindingManager instance;
 	Pathfinding pathfinding;
 
 	bool isProcessingPath;
+	public GameObject[] targets;
+
+	
 
 	void Awake() {
+		
 		instance = this;
 		pathfinding = GetComponent<Pathfinding>();
 	}
@@ -38,7 +43,7 @@ public class PathfindingManager : MonoBehaviour {
 		TryProcessNext();
 	}
 
-	struct PathRequest {
+	public struct PathRequest {
 		public Vector2 pathStart;
 		public Vector2 pathEnd;
 		public Action<Vector2[], bool> callback;

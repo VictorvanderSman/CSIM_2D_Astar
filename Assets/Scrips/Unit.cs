@@ -5,13 +5,20 @@ public class Unit : MonoBehaviour {
 
 
 	public Transform target;
+	public GameObject[] targets;
+
 	float speed = 20;
 	Vector2[] path;
 	int targetIndex;
+	public int PreviousOption = 999;
 
 	void Start() {
+
+		targets = GameObject.FindGameObjectsWithTag("Targets");
+		target = FindTarget();
 		PathfindingManager.RequestPath(transform.position,target.position, OnPathFound);
 	}
+	
 
 	public void OnPathFound(Vector2[] newPath, bool pathSuccessful) {
 		if (pathSuccessful) {
@@ -21,13 +28,31 @@ public class Unit : MonoBehaviour {
 			StartCoroutine("FollowPath");
 		}
 	}
+	public Transform FindTarget()
+	{
+		int RandomOption = Random.Range(0, targets.Length);
+		
+		while(RandomOption == PreviousOption)
+			RandomOption = Random.Range(0, targets.Length);
+		
+		PreviousOption = RandomOption;
+		
+		return targets[RandomOption].transform;
+	}
 
 	IEnumerator FollowPath() {
+
 		Vector3 currentWaypoint = path[0];
+
 		while (true) {
 			if (transform.position == currentWaypoint) {
 				targetIndex ++;
 				if (targetIndex >= path.Length) {
+
+					// at the end of the path, find a new target
+					target = FindTarget();
+					PathfindingManager.RequestPath(transform.position,target.position, OnPathFound);
+
 					yield break;
 				}
 				currentWaypoint = path[targetIndex];

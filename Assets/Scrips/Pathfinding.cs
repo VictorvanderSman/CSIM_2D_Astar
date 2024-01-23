@@ -51,7 +51,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     
                     sw.Stop();
-                    print("Path found: " + sw.ElapsedMilliseconds + "ms");
+                    // print("Path found: " + sw.ElapsedMilliseconds + "ms");
                     pathSucces = true;
                     break;
                 }
@@ -112,7 +112,8 @@ public class Pathfinding : MonoBehaviour
 
     }
 
-    Vector2[] SimplifyPath(List<Node> path){
+    Vector2[] SimplifyPath(List<Node> path)
+    {
             List<Vector2> waypoints = new List<Vector2>();
             Vector2 directionOld = Vector2.zero;
             for(int i = 1; i< path.Count; i++)
